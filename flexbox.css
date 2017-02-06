@@ -1,0 +1,94 @@
+.parent-container{
+	width: 100%;
+	background-color: #FF723C;
+	margin: 1.2em;
+	font-family: arial;
+	font-size: 15pt;
+	text-align: center;
+	color: navy;
+	/*dodajemy rodzicowi display flex – ma to wpływ na wszystkie jego dzieci (bezpośrednie)*/
+	display: flex;
+}
+
+.parent-container > div{
+/*	flex-basis to domyślna szerokość elementu zanim flex-grow lub flex-shrink rozdrystrybuuje to według nadanych wartości na pełną szerokość pojemnika
+	flex-basis może mieć wartość w procentach, emach albo pikselach,
+	przyjmuje też wartość auto – co oznacza, że każe przeglądarce wziąć pod uwagę szerokość jego kontentu lub nadaną szerokość przez width
+	przyjmuje też wartości numeryczne, takie jak flex-grow czy shrink.
+	Tutaj macie diagramik: https://www.w3.org/TR/css-flexbox-1/images/rel-vs-abs-flex.svg*/
+	flex-basis: 20%;
+	padding: 0.5em;
+	border: 1px solid black;
+}
+
+.parent-container:first-child{
+	/*ustawienie przepływu elementów w naszej tabeli*/
+	flex-direction: column;
+	/*dzięki wrap nasze kolumny będą się łamać kiedy ich łączna szerokość przekroczy 100%*/
+	flex-wrap: wrap;
+	/*wyrównanie wzdłuż osi głównej*/
+	justify-content: space-around;
+	/*wyrównanie wielkości wzdłuż osi głównej*/
+	align-items: stretch;
+	/*wyrównanie prostopadle do osi głównej*/
+	align-content: space-around;
+}
+.parent-container:last-child{
+	flex-direction: row-reverse;
+	flex-wrap: wrap;
+	justify-content: center;
+	align-items: center;
+	align-content: center;
+}
+.blue{
+	background-color: #78FFF1;
+	height: 2em;
+	/*order pozwala nam ustawić manualnie kolejność wyświetlania elementów. Tutaj przypisujemy do klasy, więc elementy z tą samą klasą będą obok siebie, dobrze dawać order np. do jakiegoś id*/
+	order: 1;
+	/*grow i shrink pozwalają na ustalenie, w jakich proporcjach elementy mają się kurczyć lub rosnąć w zależności od wielkości rodzica, działa to wtedy, gdy nie przypiszemy żadnej stałej dla width*/
+	flex-grow: 3;
+	flex-shrink: 1;
+}
+.red{
+	background-color: #A51004;
+	height: 3em;
+	order: 3;
+	flex-grow: 1;
+	flex-shrink: 3;
+}
+.green{
+	background-color: #CCEA18;
+	height: 1em;
+	order: 2;
+	flex-grow: 2;
+	flex-shrink: 2;
+}
+/*Korzystając z media queries pamiętaj o:
+1. Kaskadowej właściwości CSS - to, co zadeklarujesz niżej, zostanie wykonane
+2. Hierarchii ważności tag < klasa < id lub pseudoatrybut
+3. Metatagu viewport
+
+Dobrze jest pracować "mobile first" tzn deklarować na górze style dla mobile, a w media queries dla większych urządzeń
+Niemniej przyjmowane są zarówno min-width/min-height jak i max-width/height
+
+Pamiętaj o łączniku "and" lub "or" – media query to rodzaj warunku, który kiedy jest spełniony, wykonuje zawarty w sobie css
+and ustala, że wszystkie parametry muszą być spełnione, np poniżej "tylko screen" i większy niż 600px;
+or ustala, że jeden z parametrów musi być spełniony*/
+
+@media only screen and (min-width: 600px){
+	body{
+		background-color: red;
+	}
+	.parent-container:first-child{
+		display: block;
+
+	}
+}
+/*Zauważ, że kolejne query wyłączy nam to poprzednie, przy czym w tym wypadku powróci do stanu poprzedniego
+Pamiętaj, by korzystać z nich rozsądnie, bo każda linijka css to kolejne informacje do pobrania przez przeglądarkę :)*/
+@media only screen and (min-width: 1000px){
+	.parent-container:first-child{
+		display: flex;
+		flex-direction: row;
+	}
+}
